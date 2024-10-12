@@ -22,10 +22,10 @@
 #' @export
 #' @rdname modify-dots
 #'
-g <- function(x) {
+g <- function(x, .envir = NULL) {
   x <- deparse(substitute(x))
-  envir <- parent.frame()
-  dots <- .get_dots(envir)
+  .envir <- .envir %||% parent.frame()
+  dots <- .get_dots(.envir)
   dots[[x]]
 }
 
@@ -35,7 +35,7 @@ g <- function(x) {
 s <- function(...) {
   envir <- parent.frame()
   dots <- modifyList(.get_dots(envir), list(...))
-  do.call(\(...) { # create new <...> object and replace in caller env
+  do.call(function(...) { # create new <...> object and replace in caller env
     assign("...", environment()$..., envir = envir)
   }, dots)
 }

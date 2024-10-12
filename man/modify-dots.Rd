@@ -5,7 +5,7 @@
 \alias{s}
 \title{Modify \code{...} on the fly}
 \usage{
-g(x)
+g(x, .envir = NULL)
 
 s(...)
 }
