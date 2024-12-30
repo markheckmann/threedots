@@ -21,20 +21,32 @@ remotes::install_github("markheckmann/threedots")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The common way to modify the dots and pass them to another function is
+to use `do.call` ([see
+here](https://stackoverflow.com/questions/34159520/modifying-dots-inside-a-function)):
+
+``` r
+plot2 <- \ (...) {
+    dots <- list(...)
+    dots$type = 'l'
+    do.call(plot, dots)
+}
+
+x <- sample(1:10)
+plot(x)
+plot2(x)
+```
+
+`{threedots}` allows to modify the dots directly via `modify_dots()`. It
+is basically just syntactic sugar for the `do.call` approach above.
 
 ``` r
 library(threedots)
 
-foo <- \(...) {
-  modify_dots(a = NULL, b = 999, c = "new") # remove a, change b, add c
-  list(...)
+plot3 <- \ (...) {
+    modify_dots(type = 'l')
+    plot(...)
 }
 
-foo(a = 1, b = 2)
-#> $b
-#> [1] 999
-#> 
-#> $c
-#> [1] "new"
+plot3(x)
 ```
