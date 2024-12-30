@@ -2,4 +2,6 @@
 
 export(.)
 export(modify_dots)
+export(safe_dots)
 import(rlang)
+importFrom(utils,modifyList)
