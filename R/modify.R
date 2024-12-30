@@ -5,12 +5,12 @@
 #
 # It is possible to access ... using get (see here) or env$... and also replace
 # the <...> object (albeit not directly). Hence, we could create a getter (g)
-# and setter (s) function for .... Behind the scenes, a conversion from ... to
+# and setter (s) function for ... . Behind the scenes, a conversion from ... to
 # a list still occurs, but we won't see it as a user and have a simple interface
-# for updating ....
+# for updating ... .
 #
 .get_dots <- function(envir) {
-  assign("...", envir$...)
+  assign("...", envir$...) # assign dots from envir to ... in current env
   list(...)
 }
 
@@ -22,7 +22,7 @@
 #' @export
 #' @rdname modify-dots
 #'
-g <- function(x, .envir = NULL) {
+. <- function(x, .envir = NULL) {
   x <- deparse(substitute(x))
   .envir <- .envir %||% parent.frame()
   dots <- .get_dots(.envir)
@@ -32,10 +32,11 @@ g <- function(x, .envir = NULL) {
 
 #' @export
 #' @rdname modify-dots
-s <- function(...) {
+modify_dots <- function(...) {
   envir <- parent.frame()
   dots <- modifyList(.get_dots(envir), list(...))
   do.call(function(...) { # create new <...> object and replace in caller env
     assign("...", environment()$..., envir = envir)
   }, dots)
 }
+

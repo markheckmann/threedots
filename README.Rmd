@@ -38,7 +38,7 @@ This is a basic example which shows you how to solve a common problem:
 library(threedots)
 
 foo <- \(...) {
-  s(a = NULL, b = 999, c = "new") # remove a, change b, add c
+  modify_dots(a = NULL, b = 999, c = "new") # remove a, change b, add c
   list(...)
 }
 
