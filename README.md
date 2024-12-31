@@ -6,6 +6,7 @@
 
 ![](https://img.shields.io/badge/language-R-blue)
 ![](https://img.shields.io/badge/status-experimental-yellow)
+[![R-CMD-check](https://github.com/markheckmann/threedots/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/markheckmann/threedots/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 Modify the dots (`...`) directly inside the function body.
