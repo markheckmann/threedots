@@ -1,15 +1,14 @@
 
+# threedots: Modify `...` directly <a href="https://docu.openrepgrid.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# threedots
-
 <!-- badges: start -->
 
 ![](https://img.shields.io/badge/language-R-blue)
 ![](https://img.shields.io/badge/status-experimental-yellow)
 <!-- badges: end -->
 
-Modify the dots (`...`) directly inside a function body.
+Modify the dots (`...`) directly inside the function body.
 
 ## Installation
 
@@ -19,16 +18,16 @@ You can install the development version of threedots like so:
 remotes::install_github("markheckmann/threedots")
 ```
 
-## Example
+## Modify the dots
 
 The common way to modify the dots and pass them to another function is
-to use `do.call`:
+to use `do.call()`:
 
 ``` r
-fun <- \ (...) {
-    dots <- list(...)
-    dots$new_arg = 999
-    do.call(list, dots)
+fun <- \(...) {
+  dots <- list(...)
+  dots$new_arg <- 999
+  do.call(list, dots)
 }
 
 fun(a = 1)
@@ -40,14 +39,14 @@ fun(a = 1)
 ```
 
 `{threedots}` allows to modify the dots directly via `modify_dots()`. It
-is basically just syntactic sugar for the `do.call` approach above.
+is basically a small wrapper around for the `do.call` approach above.
 
 ``` r
 library(threedots)
 
-fun <- \ (...) {
-    modify_dots(new_arg = 999)
-    list(...)
+fun <- \(...) {
+  modify_dots(new_arg = 999)
+  list(...)
 }
 
 fun(a = 1)
@@ -58,13 +57,13 @@ fun(a = 1)
 #> [1] 999
 ```
 
-You may also use dots args inside `modify_dots()` for calculations using
-the `.()` function.
+You can use the dots component’s names inside `modify_dots()` for
+calculations using the `.()` function.
 
 ``` r
-fun <- \ (...) {
-    modify_dots(a = .(a) * 100)
-    list(...)
+fun <- \(...) {
+  modify_dots(a = .(a) * 100) # multiply by 100
+  list(...)
 }
 
 fun(a = 1)
@@ -72,13 +71,15 @@ fun(a = 1)
 #> [1] 100
 ```
 
+## Making the dots function-safe
+
 There may be situations, where you need to clean the dots, so that they
 do not contain unknown arguments. Below, `fun()` does not know arg `c`
 and throws an error.
 
 ``` r
 fun <- \(a = 1, b = 2) {
-  list(a = a, b = b)  
+  list(a = a, b = b)
 }
 
 foo <- \(...) {
@@ -98,7 +99,7 @@ foo <- \(...) {
   args_known <- names(formals(fun))
   args_given <- names(dots)
   args_keep <- intersect(args_given, args_known)
-  do.call(fun, dots[args_keep])  # only insert known args
+  do.call(fun, dots[args_keep]) # only insert known args
 }
 foo(a = 100, c = -999)
 #> $a
