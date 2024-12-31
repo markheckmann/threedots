@@ -25,12 +25,14 @@ p <- ggplot(aes(x, y), data = df) +
   theme_void() +
   theme_transparent()
 
+set.seed(2) # for constant spotlight position
 sticker(p,
   p_color = color, p_fontface = "bold", package = "threedots",
   p_x = 1, p_y = 1.4, p_size = 22,
   s_x = 1, s_y = .80,
+  spotlight = TRUE, l_x = .9, l_y = .98, l_width = 5, l_height = 5, l_alpha = .3,
   h_fill = fill, h_color = color, p_family = family,
   s_width = 1.3, s_height = 1, filename = path
 )
 
-mh::file_open(path)
+# file.show(path)
